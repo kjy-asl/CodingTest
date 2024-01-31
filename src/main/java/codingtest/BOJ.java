@@ -1,41 +1,63 @@
 package codingtest;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BOJ {
 
-    public int solution(int[][] numbers){
-        int answer = 0;
-        int N = numbers.length;
-        int[][] dy = new int[N][3];
-        dy[0][0]=numbers[0][0];
-        dy[0][1]=numbers[0][1];
-        dy[0][2]=numbers[0][2];
-
-        for(int i=1;i< N;i++){
-            dy[i][0] = numbers[i][0]+Math.min(dy[i-1][1], dy[i-1][2]);
-            dy[i][1] = numbers[i][1]+Math.min(dy[i-1][0], dy[i-1][2]);
-            dy[i][2] = numbers[i][2]+Math.min(dy[i-1][0], dy[i-1][1]);
+    static int[][] map;
+    static boolean[][] visited;
+    static int[] answer;
+    static ArrayList<Integer> arr = new ArrayList<>();
+    private void solution(int i, int j){
+        visited[i][j] = true;
+        if ( j - 1 >= 0 && map[i][j-1] == 1 && !visited[i][j-1] ) {  // search left
+            solution(i,j-1);
         }
-
-        answer = Math.min(Math.min(dy[N-1][0], dy[N-1][1]), dy[N-1][2]);
-
-        return answer;
+        if ( j + 1 < map.length && map[i][j+1] == 1 && !visited[i][j+1] ) { // search right
+            solution(i,j+1);
+        }
+        if ( i + 1 < map.length && map[i+1][j] == 1 && !visited[i+1][j] ) { // search down
+            solution(i+1,j);
+        }
+        if ( i - 1 >= 0 && map[i-1][j] == 1 && !visited[i-1][j] ) { // search up
+            solution(i-1,j);
+        }
     }
 
     public static void main(String[] args){
         BOJ T = new BOJ();
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
-        int[][] Cost = new int[N][3];
 
-        for(int i=0;i<N;i++){
-            Cost[i][0]=sc.nextInt();
-            Cost[i][1]=sc.nextInt();
-            Cost[i][2]=sc.nextInt();
+        answer = new int[N];
+
+        for ( int i = 0 ; i < N ; i++ ) {
+            int M = sc.nextInt();
+            int L = sc.nextInt();
+            int K = sc.nextInt();
+            int count = 0;
+
+            map = new int[L][M];
+            for ( int j = 0 ; j < K ; j++){
+                int a = sc.nextInt();
+                int b = sc.nextInt();
+                map[b][a] = 1;
+            }
+            visited = new boolean[L][M];
+
+            for ( int k = 0 ; k < L ; k++ ) {
+                for ( int l = 0 ; l < M ; l++) {
+                    if ( map[k][l] == 1 && !visited[k][l]) {
+                        T.solution(k,l);
+                        count++;
+                    }
+                }
+            }
+            answer[i] = count;
         }
-
-        System.out.println(T.solution(Cost));
+        for ( int ans : answer ) {
+            System.out.println(ans);
+        }
     }
 }
