@@ -1,24 +1,26 @@
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    static int[] arr = new int[10];
+    private static int[] numberArray;
 
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int[] intArr = new int[3];
-        for (int i = 0 ; i < 3 ; i++) {
-            intArr[i] = scanner.nextInt();
+        int A = Integer.parseInt(br.readLine());
+        int B = Integer.parseInt(br.readLine());
+        int C = Integer.parseInt(br.readLine());
+
+        int num = A*B*C;
+        numberArray = new int[10];
+        while(num > 0) {
+            numberArray[num%10]++;
+            num = num/10;
         }
-        String str = String.valueOf(intArr[0]*intArr[1]*intArr[2]);
-        for (char c : str.toCharArray()) {
-            arr[c-'0']++;
-        }
-        for (int num : arr) {
-            System.out.println(num);
+        for ( int i = 0 ; i < 10 ; i++) {
+            System.out.println(numberArray[i]);
         }
     }
-
-
 }
