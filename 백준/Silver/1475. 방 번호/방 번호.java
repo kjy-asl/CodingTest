@@ -1,21 +1,28 @@
-
-import java.util.*;
+import java.io.*;
 
 public class Main {
-    static int[] arr = new int[9];
+    private static int[] numberArray;
+    private static int MAX = 0;
 
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int roomNumber = Integer.parseInt(br.readLine());
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int input = scanner.nextInt();
-        for (char c : String.valueOf(input).toCharArray()) {
-            if (c == '9') arr[6]++;
-            else {arr[c-'0']++;}
+        numberArray = new int[10];
+
+        while(roomNumber > 0) {
+            numberArray[roomNumber%10]++;
+            roomNumber = roomNumber/10;
         }
-        arr[6] = (int) Math.ceil((double) arr[6]/2.0);
-        int answer = Arrays.stream(arr).max().orElse(0);
-        System.out.println(answer);
+        numberArray[6] = (numberArray[6]+numberArray[9]+1)/2;
+//        numberArray[9] = (numberArray[9]+1)/2;
+
+        for (int i = 0 ; i < 9 ; i++) {
+            if (numberArray[i]>MAX) {
+                MAX = numberArray[i];
+            }
+        }
+
+        System.out.println(MAX);
     }
-
-
 }
